@@ -70,10 +70,11 @@ The project is coded using a simple and intuitive structure presented bellow:
    |         |    |-- login.html           # Login page
    |         |    |-- register.html        # Register page
    |         |
-   |      index.html                       # The default page
+   |     index.html                        # The default page
+   |     page-403.html                     # Error 403 page
    |     page-404.html                     # Error 404 page
-   |     page-500.html                     # Error 404 page
-   |       *.html                          # All other HTML pages
+   |     page-500.html                     # Error 500 page
+   |     *.html                            # All other HTML pages
    |
    |-- authentication/                     # Handles auth routes (login and register)
    |    |
@@ -102,6 +103,69 @@ The project is coded using a simple and intuitive structure presented bellow:
 - `core/settings.py` loads the app magic from `.env` file
 - Redirect the guest users to Login page
 - Unlock the pages served by *app* node for authenticated users
+
+<br />
+
+## Deployment
+
+The app is provided with a basic configuration to be executed in [Docker](https://www.docker.com/), [Gunicorn](https://gunicorn.org/), and [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/).
+
+### [Docker](https://www.docker.com/) execution
+---
+
+The application can be easily executed in a docker container. The steps:
+
+> Get the code
+```bash
+$ git clone https://github.com/app-generator/django-dashboard-corona-dark.git
+$ cd django-dashboard-corona-dark
+```
+
+> Start the app in Docker
+```bash
+$ sudo docker-compose pull && sudo docker-compose build && sudo docker-compose up -d
+```
+
+Visit `http://localhost:5005` in your browser. The app should be up & running.
+
+<br />
+
+### [Gunicorn](https://gunicorn.org/)
+---
+
+Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX.
+
+> Install using pip
+```bash
+$ pip install gunicorn
+```
+> Start the app using gunicorn binary
+```bash
+$ gunicorn --bind=0.0.0.0:8001 core.wsgi:application
+Serving on http://localhost:8001
+```
+
+Visit `http://localhost:8001` in your browser. The app should be up & running.
+
+
+<br />
+
+### [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/)
+---
+
+Waitress (Gunicorn equivalent for Windows) is meant to be a production-quality pure-Python WSGI server with very acceptable performance. It has no dependencies except ones that live in the Python standard library.
+
+> Install using pip
+```bash
+$ pip install waitress
+```
+> Start the app using [waitress-serve](https://docs.pylonsproject.org/projects/waitress/en/stable/runner.html)
+```bash
+$ waitress-serve --port=8001 core.wsgi:application
+Serving on http://localhost:8001
+```
+
+Visit `http://localhost:8001` in your browser. The app should be up & running.
 
 <br />
 
