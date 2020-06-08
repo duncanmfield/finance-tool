@@ -15,7 +15,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Create New Account</h4>
-                    <p class="card-description"> Used to track finances </p>
+                    <p class="card-description">Where your assets are held</p>
                     {{ form.non_field_errors }}
                     {% for hidden_field in form.hidden_fields %}
                         {{ hidden_field }}
@@ -42,14 +42,14 @@
                                 {{ form.balance }}
                             </div>
                         </div>
-                        <div class="form-check form-check-flat form-check-primary">
+                        <div class="form-check form-check-flat form-check-success">
                             {{ form.is_internal.errors }}
                             <label class="form-check-label">
                                 {{ form.is_internal.label_tag }}
                                 {{ form.is_internal }}
                             </label>
                         </div>
-                        <input class="btn btn-primary mr-2" type="submit" value="Create">
+                        <input class="btn btn-success mr-2" type="submit" value="Create">
                         <a href="accounts.html" class="btn btn-dark">Cancel</a>
                     </form>
                 </div>

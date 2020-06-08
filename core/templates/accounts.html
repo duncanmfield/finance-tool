@@ -9,17 +9,89 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-    <div class="content-wrapper">
-        <h1>Accounts</h1>
-        <ul>
-        {% for account in object_list %}
-            <li>{{ account.name }} {{ account.type }}</li>
-            {% empty %}
-            <li>No accounts yet.</li>
-        {% endfor %}
-        </ul>
+<div class="content-wrapper">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Accounts</h4>
+                <p class="card-description">
+                    Internal
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Balance</th>
+                            <th>Last Updated</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for account in object_list %}
+                        {% if account.is_internal %}
+                        <tr>
+                            <td class="py-1">
+                                <img src="/static/assets/images/faces-clipart/pic-4.png" alt="image"/>
+                            </td>
+                            <td>{{ account.name }}</td>
+                            <td>{{ account.type }}</td>
+                            <td>{{ account.balance }}</td>
+                            <td>{{ account.last_modified }}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                <a href="account_create.html" class="btn btn-dark mr-2">Add Account</a>
+            </div>
+        </div>
+    </div>
 
-        Create new: <a href='account_create.html'>Here</a>
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Accounts</h4>
+                <p class="card-description">
+                    External
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Balance</th>
+                            <th>Last Updated</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for account in object_list %}
+                        {% if not account.is_internal %}
+                        <tr>
+                            <td class="py-1">
+                                <img src="/static/assets/images/faces-clipart/pic-1.png" alt="image"/>
+                            </td>
+                            <td>{{ account.name }}</td>
+                            <td>{{ account.type }}</td>
+                            <td>{{ account.balance }}</td>
+                            <td>{{ account.last_modified }}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                <a href="account_create.html" class="btn btn-dark mr-2">Add Account</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 <!-- Specific Plugin JS goes HERE  -->
