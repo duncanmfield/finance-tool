@@ -12,6 +12,8 @@ from django import template
 from django.utils import timezone
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
+
+from app.forms import AccountCreateForm
 from app.models import Account
 
 @login_required(login_url="/login/")
@@ -41,9 +43,8 @@ def pages(request):
 
 
 class AccountCreateView(CreateView):
+    form_class = AccountCreateForm
     template_name = 'account_create.html'
-    model = Account
-    fields = ['name', 'type', 'balance', 'is_internal']
     success_url = 'accounts.html'
 
 

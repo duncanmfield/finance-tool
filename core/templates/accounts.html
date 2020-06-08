@@ -13,14 +13,13 @@
         <h1>Accounts</h1>
         <ul>
         {% for account in object_list %}
-            <li>{{ account.name }} - {{ account.type }}</li>
+            <li>{{ account.name }} {{ account.type }}</li>
             {% empty %}
             <li>No accounts yet.</li>
         {% endfor %}
         </ul>
 
         Create new: <a href='account_create.html'>Here</a>
-    </div>
 {% endblock content %}
 
 <!-- Specific Plugin JS goes HERE  -->
