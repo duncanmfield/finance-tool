@@ -8,7 +8,8 @@ from django.urls import path, re_path
 from app import views
 
 urlpatterns = [
-    path('accounts.html', views.AccountCreate.as_view(), name='account_create'),
+    path('accounts.html', views.AccountListView.as_view(), name='accounts'),
+    path('account_create.html', views.AccountCreateView.as_view(), name='account_create'),
 
     # Matches any html file - to be used for gentella
     # Avoid using your .html in your resources.

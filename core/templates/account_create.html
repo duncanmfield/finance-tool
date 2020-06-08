@@ -10,16 +10,11 @@
 
 {% block content %}
     <div class="content-wrapper">
-        <h1>Accounts</h1>
-        <ul>
-        {% for account in object_list %}
-            <li>{{ account.name }} - {{ account.type }}</li>
-            {% empty %}
-            <li>No accounts yet.</li>
-        {% endfor %}
-        </ul>
-
-        Create new: <a href='account_create.html'>Here</a>
+        <p>Create new account</p>
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Create">
+        </form>
     </div>
 {% endblock content %}
 

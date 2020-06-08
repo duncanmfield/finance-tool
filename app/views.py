@@ -9,7 +9,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django import template
-from django.urls import reverse_lazy
+from django.utils import timezone
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 from app.models import Account
 
@@ -39,8 +40,19 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
 
 
-class AccountCreate(CreateView):
-    template_name = 'accounts.html'
+class AccountCreateView(CreateView):
+    template_name = 'account_create.html'
     model = Account
     fields = ['name', 'type', 'balance', 'is_internal']
-    success_url = '/'
+    success_url = 'accounts.html'
+
+
+class AccountListView(ListView):
+    template_name = 'accounts.html'
+    model = Account
+    paginate_by = 25
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
