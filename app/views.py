@@ -9,6 +9,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import HttpResponse
 from django import template
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+from app.models import Account
 
 @login_required(login_url="/login/")
 def index(request):
@@ -34,3 +37,10 @@ def pages(request):
     
         html_template = loader.get_template( 'page-500.html' )
         return HttpResponse(html_template.render(context, request))
+
+
+class AccountCreate(CreateView):
+    template_name = 'accounts.html'
+    model = Account
+    fields = ['name', 'type', 'balance', 'is_internal']
+    success_url = '/'

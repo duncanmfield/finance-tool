@@ -9,11 +9,13 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-
-  <div class="content-wrapper">
-      <p>Accounts page goes here</p>
-  </div>
-
+    <div class="content-wrapper">
+        <p>Create new account</p>
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Create">
+        </form>
+    </div>
 {% endblock content %}
 
 <!-- Specific Plugin JS goes HERE  -->
