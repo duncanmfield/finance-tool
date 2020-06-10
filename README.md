@@ -117,8 +117,8 @@ The application can be easily executed in a docker container. The steps:
 
 > Get the code
 ```bash
-$ git clone https://github.com/app-generator/django-dashboard-corona-dark.git
-$ cd django-dashboard-corona-dark
+$ git clone https://github.com/duncanmfield/finance-tool.git
+$ cd finance-tool
 ```
 
 > Start the app in Docker
