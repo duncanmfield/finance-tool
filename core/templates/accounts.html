@@ -26,6 +26,7 @@
                             <th>Type</th>
                             <th>Balance</th>
                             <th>Last Updated</th>
+                            <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                         </thead>
@@ -41,7 +42,12 @@
                             <td>{{ account.balance }}</td>
                             <td>{{ account.last_modified }}</td>
                             <td>
-                                <form action="{% url 'delete_view' pk=account.pk %}" method="POST">
+                                <form action="{% url 'account_update' pk=account.pk %}" method="GET">
+                                    <input class="btn btn-default btn-success" type="submit" value="Edit"/>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{% url 'account_delete' pk=account.pk %}" method="POST">
                                     {% csrf_token %}
                                     <input class="btn btn-default btn-danger" type="submit" onclick="return confirmDelete('{{account.name}}')" value="Delete"/>
                                 </form>
@@ -74,6 +80,7 @@
                             <th>Type</th>
                             <th>Balance</th>
                             <th>Last Updated</th>
+                            <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                         </thead>
@@ -89,7 +96,12 @@
                             <td>{{ account.balance }}</td>
                             <td>{{ account.last_modified }}</td>
                             <td>
-                                <form action="{% url 'delete_view' pk=account.pk %}" method="POST">
+                                <form action="{% url 'account_update' pk=account.pk %}" method="GET">
+                                    <input class="btn btn-default btn-success" type="submit" value="Edit"/>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{% url 'account_delete' pk=account.pk %}" method="POST">
                                     {% csrf_token %}
                                     <input class="btn btn-default btn-danger" type="submit" onclick="return confirmDelete('{{account.name}}')" value="Delete"/>
                                 </form>

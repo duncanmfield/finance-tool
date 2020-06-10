@@ -14,7 +14,7 @@
         <div class="col-md-6 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Create New Account</h4>
+                    <h4 class="card-title">{{ label_card_title }}</h4>
                     <p class="card-description">Where your assets are held</p>
                     {{ form.non_field_errors }}
                     {% for hidden_field in form.hidden_fields %}
@@ -49,7 +49,7 @@
                                 {{ form.is_internal }}
                             </label>
                         </div>
-                        <input class="btn btn-success mr-2" type="submit" value="Create">
+                        <input class="btn btn-success mr-2" type="submit" value="{{ label_submit_button }}">
                         <a href="{% url 'accounts' %}" class="btn btn-dark">Cancel</a>
                     </form>
                 </div>
