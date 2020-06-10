@@ -31,7 +31,7 @@
                     </div>
                   </div>
                   <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">Account settings</p>
+                    <p class="preview-subject ellipsis mb-1 text-small">Settings</p>
                   </div>
                 </a>
                 <div class="dropdown-divider"></div>
@@ -52,15 +52,23 @@
             <span class="nav-link">Navigation</span>
           </li>
           <li class="nav-item menu-items">
-            <a class="nav-link" href="/">
+            <a class="nav-link" href="{% url 'home' %}">
               <span class="menu-icon">
                 <i class="mdi mdi-speedometer"></i>
               </span>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'accounts' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-laptop"></i>
+              </span>
+              <span class="menu-title">Accounts</span>
+            </a>
+          </li>
           <!--<li class="nav-item menu-items">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link" data-toggle="collapse" href="#accounts" aria-expanded="false" aria-controls="ui-basic">
               <span class="menu-icon">
                 <i class="mdi mdi-laptop"></i>
               </span>
@@ -69,7 +77,7 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/ui-buttons.html">Add</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/">Add</a></li>
               </ul>
             </div>
           </li>-->

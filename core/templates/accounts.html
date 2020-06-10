@@ -1,0 +1,133 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Accounts {% endblock %}
+
+<!-- Specific Plugin CSS goes HERE -->
+{% block plugin_stylesheets %}{% endblock plugin_stylesheets %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="col-lg-13 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Accounts</h4>
+                <p class="card-description">
+                    Internal
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Balance</th>
+                            <th>Last Updated</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for account in object_list %}
+                        {% if account.is_internal %}
+                        <tr>
+                            <td class="py-1">
+                                <img src="/static/assets/images/faces-clipart/pic-4.png" alt="image"/>
+                            </td>
+                            <td>{{ account.name }}</td>
+                            <td>{{ account.type }}</td>
+                            <td>{{ account.balance }}</td>
+                            <td>{{ account.last_modified }}</td>
+                            <td>
+                                <form action="{% url 'account_update' pk=account.pk %}" method="GET">
+                                    <input class="btn btn-default btn-success" type="submit" value="Edit"/>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{% url 'account_delete' pk=account.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <input class="btn btn-default btn-danger" type="submit" onclick="return confirmDelete('{{account.name}}')" value="Delete"/>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                <a href="{% url 'account_create' %}" class="btn btn-dark mr-2">Add Account</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-13 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Accounts</h4>
+                <p class="card-description">
+                    External
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Account</th>
+                            <th>Type</th>
+                            <th>Balance</th>
+                            <th>Last Updated</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for account in object_list %}
+                        {% if not account.is_internal %}
+                        <tr>
+                            <td class="py-1">
+                                <img src="/static/assets/images/faces-clipart/pic-1.png" alt="image"/>
+                            </td>
+                            <td>{{ account.name }}</td>
+                            <td>{{ account.type }}</td>
+                            <td>{{ account.balance }}</td>
+                            <td>{{ account.last_modified }}</td>
+                            <td>
+                                <form action="{% url 'account_update' pk=account.pk %}" method="GET">
+                                    <input class="btn btn-default btn-success" type="submit" value="Edit"/>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="{% url 'account_delete' pk=account.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <input class="btn btn-default btn-danger" type="submit" onclick="return confirmDelete('{{account.name}}')" value="Delete"/>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+                <a href="{% url 'account_create' %}" class="btn btn-dark mr-2">Add Account</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Plugin JS goes HERE  -->
+{% block plugin_javascripts %}{% endblock plugin_javascripts %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    function confirmDelete(msg) {
+        return confirm('Are you sure you want to delete \'' + msg + '\'?')
+    }
+</script>
+{% endblock javascripts %}
