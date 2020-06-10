@@ -26,6 +26,7 @@
                             <th>Type</th>
                             <th>Balance</th>
                             <th>Last Updated</th>
+                            <th>Delete</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -39,6 +40,12 @@
                             <td>{{ account.type }}</td>
                             <td>{{ account.balance }}</td>
                             <td>{{ account.last_modified }}</td>
+                            <td>
+                                <form action="{% url 'delete_view' pk=account.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <input class="btn btn-default btn-danger" type="submit" onclick="return confirmDelete('{{account.name}}')" value="Delete"/>
+                                </form>
+                            </td>
                         </tr>
                         {% endif %}
                         {% endfor %}
@@ -67,6 +74,7 @@
                             <th>Type</th>
                             <th>Balance</th>
                             <th>Last Updated</th>
+                            <th>Delete</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -80,6 +88,12 @@
                             <td>{{ account.type }}</td>
                             <td>{{ account.balance }}</td>
                             <td>{{ account.last_modified }}</td>
+                            <td>
+                                <form action="{% url 'delete_view' pk=account.pk %}" method="POST">
+                                    {% csrf_token %}
+                                    <input class="btn btn-default btn-danger" type="submit" onclick="return confirmDelete('{{account.name}}')" value="Delete"/>
+                                </form>
+                            </td>
                         </tr>
                         {% endif %}
                         {% endfor %}
@@ -98,4 +112,10 @@
 {% block plugin_javascripts %}{% endblock plugin_javascripts %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script>
+    function confirmDelete(msg) {
+        return confirm('Are you sure you want to delete \'' + msg + '\'?')
+    }
+</script>
+{% endblock javascripts %}
