@@ -1,0 +1,3 @@
+# tell github's linguist to ignore static files
+core/static/* linguist-vendored
+core/staticfiles/* linguist-vendored
