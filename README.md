@@ -130,7 +130,7 @@ Visit `http://localhost:5005` in your browser. The app should be up & running.
 
 <br />
 
-### [Gunicorn](https://gunicorn.org/)
+### [Gunicorn (UNIX)](https://gunicorn.org/)
 ---
 
 Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX.
@@ -150,7 +150,7 @@ Visit `http://localhost:8001` in your browser. The app should be up & running.
 
 <br />
 
-### [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/)
+### [Waitress (Windows)](https://docs.pylonsproject.org/projects/waitress/en/stable/)
 ---
 
 Waitress (Gunicorn equivalent for Windows) is meant to be a production-quality pure-Python WSGI server with very acceptable performance. It has no dependencies except ones that live in the Python standard library.
