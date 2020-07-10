@@ -20,11 +20,11 @@ class Account(models.Model):
     id = models.IntegerField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
-    type = models.CharField(max_length=32, choices=TYPE_CHOICES, default='Bank Account')
+    type = models.CharField(max_length=32, choices=TYPE_CHOICES, default=TYPE_CHOICES[0][1])
     is_internal = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now=True)
-    balance = models.IntegerField()
+    balance = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name

@@ -12,6 +12,7 @@ urlpatterns = [
     path('account_create_update.html', views.AccountCreateView.as_view(), name='account_create'),
     url(r'^account_update/(?P<pk>\d+)/$', views.AccountUpdateView.as_view(), name='account_update'),
     url(r'^account_delete/(?P<pk>\d+)/$', views.AccountDeleteView.as_view(), name='account_delete'),
+    path('account-values-chart/', views.account_values_chart, name='account-values-chart'),
 
     # Matches any html file - to be used for gentella
     # Avoid using your .html in your resources.

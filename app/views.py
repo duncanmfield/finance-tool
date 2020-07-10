@@ -6,9 +6,10 @@ Copyright (c) 2019 - present AppSeed.us
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum
 from django.shortcuts import render
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django import template
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -19,7 +20,10 @@ from app.models import Account
 
 @login_required
 def index(request):
-    return render(request, "index.html")
+    net_worth = Account.objects.filter(is_internal=True).aggregate(Sum('balance')).get('balance__sum')
+    context = {"net_worth": net_worth}
+
+    return render(request=request, template_name="index.html", context=context)
 
 @login_required
 def pages(request):
@@ -84,3 +88,24 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
+
+
+def account_values_chart(request):
+    labels = []
+    data = []
+    total = 0
+
+    queryset = Account.objects.filter(user=request.user, is_internal=True).order_by('balance')
+
+    for account in queryset:
+        labels.append(account.name)
+        data.append(account.balance)
+        total += account.balance
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+        'centerText': str(total),
+        'centerSubText': 'Total',
+        'colorPalette': 'cb-Greens',
+    })

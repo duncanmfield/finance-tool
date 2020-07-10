@@ -22,7 +22,7 @@
                     <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                             <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                <h2 class="mb-0">£0</h2>
+                                <h2 class="mb-0">{{ net_worth }}</h2>
                                 <p class="text-muted ml-2 mb-0 font-weight-medium">+0%</p>
                             </div>
                             <h6 class="text-muted font-weight-normal">0% since last year</h6>
@@ -54,18 +54,16 @@
             </div>
         </div>
     </div>
-    <!--
     <div class="row">
-        <div class="col-lg-6 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Asset Allocation</h4>
-                    <canvas id="pieChart" style="height:250px"></canvas>
-                </div>
-            </div>
+      <div class="col-md-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Account Summary</h4>
+              <canvas id="account-values-chart" data-url="{% url 'account-values-chart' %}"></canvas>
+          </div>
         </div>
+      </div>
     </div>
-    -->
 </div>
 {% endblock content %}
 
@@ -79,7 +77,7 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
+<script src="/static/assets/js/palette.js"></script>
 <script src="/static/assets/js/dashboard.js"></script>
-<script src="/static/assets/js/chart.js"></script>
 
 {% endblock javascripts %}
