@@ -95,7 +95,7 @@ def account_values_chart(request):
     data = []
     total = 0
 
-    queryset = Account.objects.filter(is_internal=True).order_by('balance')
+    queryset = Account.objects.filter(user=request.user, is_internal=True).order_by('balance')
 
     for account in queryset:
         labels.append(account.name)
