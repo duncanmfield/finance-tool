@@ -18,6 +18,14 @@ class AccountTests(TestCase):
         self.foreign = Account.objects.create(user_id=self.user.id, name='B', type=Account.TYPE_CHOICES[0][1])
 
     def test_account_model(self):
+        # Arrange
         queryset = Account.objects.all()
-        self.assertEqual(queryset.count(), 2)
-        self.assertEqual(queryset.first(), self.personal)
+
+        # Act
+
+        # Assert
+        self.assertEqual(queryset.first().name, self.personal.name)
+        self.assertEqual(queryset.last().name, self.foreign.name)
+
+        self.assertEqual(queryset.last().type, Account.TYPE_CHOICES[0][1])
+        self.assertIsNotNone(Account.TYPE_CHOICES[0][1])
