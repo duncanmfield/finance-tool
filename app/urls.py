@@ -14,6 +14,8 @@ urlpatterns = [
     url(r'^account_delete/(?P<pk>\d+)/$', views.AccountDeleteView.as_view(), name='account_delete'),
     path('account-values-chart/', views.account_values_chart, name='account-values-chart'),
 
+    url(r'^user_settings/(?P<pk>\d+)/$', views.UserSettingsUpdateView.as_view(), name='user_settings'),
+
     # Matches any html file - to be used for gentella
     # Avoid using your .html in your resources.
     # Or create a separate django app.

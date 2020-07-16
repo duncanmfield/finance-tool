@@ -9,6 +9,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+{% load currency_formatting %}
 <div class="content-wrapper">
     <div class="col-lg-13 grid-margin stretch-card">
         <div class="card">
@@ -39,7 +40,7 @@
                             </td>
                             <td>{{ account.name }}</td>
                             <td>{{ account.type }}</td>
-                            <td>{{ account.balance }}</td>
+                            <td>{% as_currency account.balance %}</td>
                             <td>{{ account.last_modified }}</td>
                             <td>
                                 <form action="{% url 'account_update' pk=account.pk %}" method="GET">
@@ -93,7 +94,7 @@
                             </td>
                             <td>{{ account.name }}</td>
                             <td>{{ account.type }}</td>
-                            <td>{{ account.balance }}</td>
+                            <td>{% as_currency account.balance %}</td>
                             <td>{{ account.last_modified }}</td>
                             <td>
                                 <form action="{% url 'account_update' pk=account.pk %}" method="GET">
