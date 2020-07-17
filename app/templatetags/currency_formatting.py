@@ -20,6 +20,11 @@ def as_currency(context, value):
     return as_currency_with_user(context['user'], value)
 
 
+@register.simple_tag(takes_context=True)
+def currency_symbol(context):
+    return apply_symbol('', context['user'].settings.currency)
+
+
 def as_currency_with_user(user, value):
     formatted_number = apply_formatting(value, user.settings.number_format)
     formatted_currency = apply_symbol(formatted_number, user.settings.currency)
