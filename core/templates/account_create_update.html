@@ -9,6 +9,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+{% load currency_formatting %}
 <div class="content-wrapper">
     <div class="row">
         <div class="col-md-6 grid-margin stretch-card">
@@ -39,7 +40,10 @@
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">{{ form.balance.label_tag }}</label>
                             <div class="col-sm-10">
-                                {{ form.balance }}
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">{% currency_symbol %}</span>
+                                    {{ form.balance }}
+                                </div>
                             </div>
                         </div>
                         {{ form.is_internal.errors }}

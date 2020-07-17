@@ -41,7 +41,7 @@ $ # Access the web app in browser: http://127.0.0.1:8000/
 
 ## Code-base structure
 
-The project is coded using a simple and intuitive structure presented bellow:
+The project is coded using a simple and intuitive structure presented below:
 
 ```bash
 < PROJECT ROOT >
@@ -85,7 +85,9 @@ The project is coded using a simple and intuitive structure presented bellow:
    |-- app/                                # A simple app that serve HTML files
    |    |
    |    |-- views.py                       # Serve HTML pages for authenticated users
-   |    |-- urls.py                        # Define some super simple routes  
+   |    |-- urls.py                        # Define some super simple routes 
+   |    |-- templatetags/                  # Custom template tags
+   |    |    |-- currency_formatting.py    # Tag for formatting numbers and adding currency symbols
    |
    |-- requirements.txt                    # Development modules - SQLite storage
    |

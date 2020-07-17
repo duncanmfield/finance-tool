@@ -5,8 +5,8 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from django import forms
+from app.models import Account, Settings
 
-from app.models import Account
 
 class AccountCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -57,3 +57,19 @@ class AccountUpdateForm(forms.ModelForm):
     class Meta:
         model = Account
         fields = ('name', 'type', 'balance', 'is_internal')
+
+class UserSettingsUpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserSettingsUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['currency'].widget.attrs = {
+            'placeholder': 'Currency',
+            'class': 'form-control'
+        }
+        self.fields['number_format'].widget.attrs = {
+            'placeholder': 'Number Format',
+            'class': 'form-control'
+        }
+
+    class Meta:
+        model = Settings
+        fields = ('currency', 'number_format')

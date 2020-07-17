@@ -13,6 +13,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
+{% load currency_formatting %}
 <div class="content-wrapper">
     <div class="row">
         <div class="col-sm-6 grid-margin">
@@ -22,13 +23,13 @@
                     <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                             <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                <h2 class="mb-0">{{ net_worth }}</h2>
+                                <h2 class="mb-0">{% as_currency net_worth %}</h2>
                                 <p class="text-muted ml-2 mb-0 font-weight-medium">+0%</p>
                             </div>
                             <h6 class="text-muted font-weight-normal">0% since last year</h6>
                         </div>
                         <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
-                            <i class="icon-lg mdi mdi-codepen text-primary ml-auto"></i>
+                            <i class="icon-lg mdi mdi-chart-line text-primary ml-auto"></i>
                         </div>
                     </div>
                 </div>
@@ -41,7 +42,7 @@
                     <div class="row">
                         <div class="col-8 col-sm-12 col-xl-8 my-auto">
                             <div class="d-flex d-sm-block d-md-flex align-items-center">
-                                <h2 class="mb-0">£0/£0</h2>
+                                <h2 class="mb-0">{% as_currency 0 %}/{% as_currency 0 %}</h2>
                                 <p class="text-success ml-2 mb-0 font-weight-medium">On track</p>
                             </div>
                             <h6 class="text-muted font-weight-normal">100% of available spending</h6>
@@ -59,7 +60,7 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">Account Summary</h4>
-              <canvas id="account-values-chart" data-url="{% url 'account-values-chart' %}"></canvas>
+              <canvas id="account_values_chart" data-url="{% url 'account_values_chart' %}"></canvas>
           </div>
         </div>
       </div>

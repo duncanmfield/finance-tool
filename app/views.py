@@ -15,12 +15,18 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from app.forms import AccountCreateForm, AccountUpdateForm
-from app.models import Account
+from app.forms import AccountCreateForm, AccountUpdateForm, UserSettingsUpdateForm
+from app.models import Account, Settings
+from app.templatetags.currency_formatting import as_currency_with_user
+
 
 @login_required
 def index(request):
-    net_worth = Account.objects.filter(is_internal=True).aggregate(Sum('balance')).get('balance__sum')
+    net_worth = Account.objects.filter(user=request.user, is_internal=True).aggregate(Sum('balance')).get('balance__sum')
+
+    if net_worth is None:
+        net_worth = 0
+
     context = {"net_worth": net_worth}
 
     return render(request=request, template_name="index.html", context=context)
@@ -105,7 +111,23 @@ def account_values_chart(request):
     return JsonResponse(data={
         'labels': labels,
         'data': data,
-        'centerText': str(total),
+        'centerText': as_currency_with_user(request.user, total),
         'centerSubText': 'Total',
         'colorPalette': 'cb-Greens',
     })
+
+class UserSettingsUpdateView(LoginRequiredMixin, UpdateView):
+    model = Settings
+    form_class = UserSettingsUpdateForm
+    template_name = 'user_settings_update.html'
+    success_url = reverse_lazy('home')
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
+
+    def get_object(self):
+        return self.get_queryset().first()
+
+    def get_context_data(self, **kwargs):
+        context = super(UserSettingsUpdateView, self).get_context_data(**kwargs)
+        return context
