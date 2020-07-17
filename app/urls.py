@@ -8,13 +8,13 @@ from django.urls import path, re_path
 from app import views
 
 urlpatterns = [
-    path('accounts.html', views.AccountListView.as_view(), name='accounts'),
-    path('account_create_update.html', views.AccountCreateView.as_view(), name='account_create'),
+    path('accounts/', views.AccountListView.as_view(), name='accounts'),
+    path('account_create/', views.AccountCreateView.as_view(), name='account_create'),
     url(r'^account_update/(?P<pk>\d+)/$', views.AccountUpdateView.as_view(), name='account_update'),
     url(r'^account_delete/(?P<pk>\d+)/$', views.AccountDeleteView.as_view(), name='account_delete'),
-    path('account-values-chart/', views.account_values_chart, name='account-values-chart'),
+    path('account_values_chart/', views.account_values_chart, name='account_values_chart'),
 
-    url(r'^user_settings/(?P<pk>\d+)/$', views.UserSettingsUpdateView.as_view(), name='user_settings'),
+    path('user_settings/', views.UserSettingsUpdateView.as_view(), name='user_settings'),
 
     # Matches any html file - to be used for gentella
     # Avoid using your .html in your resources.

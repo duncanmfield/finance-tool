@@ -125,6 +125,9 @@ class UserSettingsUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
 
+    def get_object(self):
+        return self.get_queryset().first()
+
     def get_context_data(self, **kwargs):
         context = super(UserSettingsUpdateView, self).get_context_data(**kwargs)
         return context

@@ -5,8 +5,8 @@
   }
 
   $(function() {
-    if ($("#account-values-chart").length) {
-      var $accountValuesChart = $("#account-values-chart");
+    if ($("#account_values_chart").length) {
+      var $accountValuesChart = $("#account_values_chart");
       $.ajax({
         url: $accountValuesChart.data("url"),
         success: function (data) {
