@@ -45,7 +45,7 @@ class Account(models.Model):
     is_internal = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now=True)
-    balance = models.DecimalField(max_digits=14, decimal_places=2)
+    balance = models.DecimalField(max_digits=14, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
