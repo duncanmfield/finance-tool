@@ -39,7 +39,7 @@
                                 <img src="/static/assets/images/faces-clipart/pic-4.png" alt="image"/>
                             </td>
                             <td>{{ account.name }}</td>
-                            <td>{{ account.type }}</td>
+                            <td>{{ account.get_type_display }}</td>
                             <td>{% as_currency account.balance %}</td>
                             <td>{{ account.last_modified }}</td>
                             <td>
@@ -93,12 +93,12 @@
                                 <img src="/static/assets/images/faces-clipart/pic-1.png" alt="image"/>
                             </td>
                             <td>{{ account.name }}</td>
-                            <td>{{ account.type }}</td>
+                            <td>{{ account.get_type_display }}</td>
                             <td>{% as_currency account.balance %}</td>
                             <td>{{ account.last_modified }}</td>
                             <td>
                                 <form action="{% url 'account_update' pk=account.pk %}" method="GET">
-                                    <input class="btn btn-default btn-outline-success" type="submit" value="Edit"/>
+                                    <input class="btn btn-default btn-outline-warning" type="submit" value="Edit"/>
                                 </form>
                             </td>
                             <td>
