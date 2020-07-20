@@ -37,4 +37,4 @@ jobs:
         coverage run --source='.' manage.py test
     - name: Report code coverage
       run: |
-        codecov
+        codecov -t
