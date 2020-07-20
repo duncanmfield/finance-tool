@@ -4,9 +4,10 @@ MIT License
 Copyright (c) 2019 - present AppSeed.us
 """
 from django.contrib.auth.models import User
+from django.template import Template, Context
 from django.test import TestCase
 
-from app.models import Account
+from app.models import Account, Settings
 from app.templatetags import currency_formatting
 
 
@@ -31,7 +32,8 @@ class AccountTests(TestCase):
 
 class CurrencyFormattingTests(TestCase):
     def setUp(self):
-        pass
+        self.user = User.objects.create_user(username='test', password='12345')
+        self.client.login(username='test', password='12345')
 
     def test_currency_codes_are_3_characters(self):
         # Arrange
@@ -43,7 +45,7 @@ class CurrencyFormattingTests(TestCase):
         self.assertGreater(len(codes), 0)
 
         for code in codes:
-            self.assertIs(len(code), 3, "Currency code '{}' should have a length of 3".format(code))
+            self.assertEqual(len(code), 3, "Currency code '{}' should have a length of 3".format(code))
 
     def test_currency_symbols_are_1_character(self):
         # Arrange
@@ -55,4 +57,54 @@ class CurrencyFormattingTests(TestCase):
         self.assertGreater(len(symbols), 0)
 
         for symbol in symbols:
-            self.assertIs(len(symbol), 1, "Currency symbol '{}' should have a length of 1".format(symbol))
+            self.assertEqual(len(symbol), 1, "Currency symbol '{}' should have a length of 1".format(symbol))
+
+    def test_default_formatting_is_valid(self):
+        # Arrange
+        initial_value = 1234.56
+
+        # Act
+        formatted_value = currency_formatting.as_currency_with_user(self.user, initial_value)
+
+        # Assert
+        self.assertTrue("1" in formatted_value)
+        self.assertTrue("234" in formatted_value)
+        self.assertTrue("56" in formatted_value)
+
+    def test_invalid_as_currency_tag_retains_digits(self):
+        # Arrange
+        initial_value = 1234.56
+        self.user.settings.currency = 'InvalidType'
+        context = Context({"user": self.user})
+
+        # Act
+        formatted_value = currency_formatting.as_currency(context, initial_value)
+
+        # Assert
+        self.assertTrue("1" in formatted_value)
+        self.assertTrue("234" in formatted_value)
+        self.assertTrue("56" in formatted_value)
+
+    def test_as_currency_tag_retains_digits(self):
+        # Arrange
+        initial_value = 1234.56
+        context = Context({"user": self.user})
+
+        # Act
+        formatted_value = currency_formatting.as_currency(context, initial_value)
+
+        # Assert
+        self.assertTrue("1" in formatted_value)
+        self.assertTrue("234" in formatted_value)
+        self.assertTrue("56" in formatted_value)
+
+    def test_currency_symbol_tag_adds_symbol(self):
+        # Arrange
+        context = Context({"user": self.user})
+
+        # Act
+        symbol = currency_formatting.currency_symbol(context)
+
+        # Assert
+        self.assertEqual(len(symbol), 1)
+
