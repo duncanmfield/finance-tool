@@ -10,3 +10,4 @@ python-decouple
 gunicorn
 waitress
 whitenoise
+coverage

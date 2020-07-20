@@ -26,7 +26,7 @@ class AccountTests(TestCase):
         # Assert
         self.assertEqual(self.personal.name, 'A')
         self.assertIsNotNone(queryset.first().balance)
-        self.assertTrue(queryset.first().type in Account.TYPE_CHOICES[0][1])
+        self.assertTrue(queryset.first().type in Account.TYPE_CHOICES[0])
 
 
 class CurrencyFormattingTests(TestCase):

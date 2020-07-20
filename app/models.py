@@ -50,7 +50,7 @@ class Account(models.Model):
     id = models.IntegerField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=128)
-    type = models.IntegerField(choices=TYPE_CHOICES)
+    type = models.IntegerField(choices=TYPE_CHOICES, default=BANK_ACCOUNT)
     is_internal = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now=True)
