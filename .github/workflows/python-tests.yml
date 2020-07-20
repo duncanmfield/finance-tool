@@ -36,5 +36,7 @@ jobs:
       run: |
         coverage run --source='.' manage.py test
     - name: Report code coverage
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       run: |
-        codecov -t
+        codecov
