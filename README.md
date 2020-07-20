@@ -1,6 +1,6 @@
 # Finance Tool
 
-![Python Tests](https://github.com/duncanmfield/finance-tool/workflows/Python%20Tests/badge.svg)
+![Python Tests](https://github.com/duncanmfield/finance-tool/workflows/Python%20Tests/badge.svg) [![codecov](https://codecov.io/gh/duncanmfield/finance-tool/branch/master/graph/badge.svg)](https://codecov.io/gh/duncanmfield/finance-tool)
 
 A tool built in Python using Django/Bootstrap, aiming to provide budget management as well as account and net worth tracking.
 
