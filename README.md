@@ -1,6 +1,6 @@
 # Finance Tool
 
-A tool built in Python using Django/Bootstrap, aiming to provide budget management as well as account and net worth tracking.
+A tool built in Python using Django/Bootstrap, aiming to provide budget management as well as account and net worth tracking. 
 
 Initial commit: 7th June 2020
 
