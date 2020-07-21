@@ -5,7 +5,6 @@ pycodestyle
 pytz
 sqlparse
 Unipath
-dj-database-url
 python-decouple
 gunicorn
 waitress
