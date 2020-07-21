@@ -4,10 +4,12 @@ MIT License
 Copyright (c) 2019 - present AppSeed.us
 """
 from django.contrib.auth.models import User
-from django.template import Template, Context
+from django.template import Context
 from django.test import TestCase
+from django.urls import reverse
 
-from app.models import Account, Settings
+from app.forms import AccountCreateForm, AccountUpdateForm, UserSettingsUpdateForm
+from app.models import Account
 from app.templatetags import currency_formatting
 
 
@@ -17,6 +19,9 @@ class AccountTests(TestCase):
         self.client.login(username='test', password='12345')
 
         self.personal = Account.objects.create(user_id=self.user.id, name='A')
+
+    def test_str_is_name(self):
+        self.assertEqual(str(self.personal), self.personal.name)
 
     def test_account_model(self):
         # Arrange
@@ -29,6 +34,80 @@ class AccountTests(TestCase):
         self.assertIsNotNone(queryset.first().balance)
         self.assertTrue(queryset.first().type in Account.TYPE_CHOICES[0])
 
+
+class AccountCreateFormTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='12345')
+        self.client.login(username='test', password='12345')
+
+    def test_default_create_form_is_invalid(self):
+        # Arrange
+        form = AccountCreateForm()
+
+        # Act
+
+        # Assert
+        self.assertFalse(form.is_valid())
+
+    def test_create_form_is_valid(self):
+        # Arrange
+        data = {'name': 'Foo', 'type': Account.TYPE_CHOICES[0][0], 'balance': 0}
+        form = AccountCreateForm(data=data)
+
+        # Act
+
+        # Assert
+        self.assertTrue(form.is_valid())
+
+
+class AccountUpdateFormTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='12345')
+        self.client.login(username='test', password='12345')
+
+    def test_default_update_form_is_invalid(self):
+        # Arrange
+        form = AccountUpdateForm()
+
+        # Act
+
+        # Assert
+        self.assertFalse(form.is_valid())
+
+    def test_update_form_is_valid(self):
+        # Arrange
+        data = {'name': 'Foo', 'type': Account.TYPE_CHOICES[0][0], 'balance': 0}
+        form = AccountUpdateForm(data=data)
+
+        # Act
+
+        # Assert
+        self.assertTrue(form.is_valid())
+
+class UserSettingsUpdateFormTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='12345')
+        self.client.login(username='test', password='12345')
+
+    def test_default_update_form_is_invalid(self):
+        # Arrange
+        form = UserSettingsUpdateForm()
+
+        # Act
+
+        # Assert
+        self.assertFalse(form.is_valid())
+
+    def test_update_form_is_valid(self):
+        # Arrange
+        data = {'currency': list(currency_formatting.CURRENCY_SYMBOLS)[0],
+                'number_format': list(currency_formatting.NUMBER_FORMATTING_OPTIONS)[0]}
+        form = UserSettingsUpdateForm(data=data)
+
+        # Act
+
+        # Assert
+        self.assertTrue(form.is_valid())
 
 class CurrencyFormattingTests(TestCase):
     def setUp(self):
@@ -45,7 +124,7 @@ class CurrencyFormattingTests(TestCase):
         self.assertGreater(len(codes), 0)
 
         for code in codes:
-            self.assertEqual(len(code), 3, "Currency code '{}' should have a length of 3".format(code))
+            self.assertEqual(len(code), 3, msg="Currency code '{}' should have a length of 3".format(code))
 
     def test_currency_symbols_are_1_character(self):
         # Arrange
@@ -57,7 +136,7 @@ class CurrencyFormattingTests(TestCase):
         self.assertGreater(len(symbols), 0)
 
         for symbol in symbols:
-            self.assertEqual(len(symbol), 1, "Currency symbol '{}' should have a length of 1".format(symbol))
+            self.assertEqual(len(symbol), 1, msg="Currency symbol '{}' should have a length of 1".format(symbol))
 
     def test_default_formatting_is_valid(self):
         # Arrange
@@ -73,8 +152,8 @@ class CurrencyFormattingTests(TestCase):
 
     def test_invalid_as_currency_tag_retains_digits(self):
         # Arrange
-        initial_value = 1234.56
         self.user.settings.currency = 'InvalidType'
+        initial_value = 1234.56
         context = Context({"user": self.user})
 
         # Act
@@ -108,3 +187,12 @@ class CurrencyFormattingTests(TestCase):
         # Assert
         self.assertEqual(len(symbol), 1)
 
+
+class ViewTests(TestCase):
+    def test_logged_out_redirects_to_valid_page(self):
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 302)
+        self.assertGreater(len(response.url), 0)
+
+        redirect_page_response = self.client.get(response.url)
+        self.assertEqual(redirect_page_response.status_code, 200)

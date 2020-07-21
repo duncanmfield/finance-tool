@@ -167,7 +167,7 @@ $ waitress-serve --port=8001 core.wsgi:application
 Serving on http://localhost:8001
 ```
 
-Visit `http://localhost:8001` in your browser. The app should be up & running.
+Visit `http://localhost:8001` in your browser. The app should be up and running.
 
 <br />
 
