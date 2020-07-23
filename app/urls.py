@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^account_update/(?P<pk>\d+)/$', views.AccountUpdateView.as_view(), name='account_update'),
     url(r'^account_delete/(?P<pk>\d+)/$', views.AccountDeleteView.as_view(), name='account_delete'),
     path('account_values_chart/', views.account_values_chart, name='account_values_chart'),
+    path('import/', views.import_transactions, name='import_transactions'),
 
     path('user_settings/', views.UserSettingsUpdateView.as_view(), name='user_settings'),
 

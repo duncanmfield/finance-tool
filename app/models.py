@@ -54,7 +54,15 @@ class Account(models.Model):
     is_internal = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now=True)
     last_modified = models.DateTimeField(auto_now=True)
-    balance = models.DecimalField(max_digits=14, decimal_places=2, default=0) # Replace with equivalent of @property def balance(self, date): Transactions.objects.filter(account=self, date__lte=date).aggregate(models.Sum('amount'))['amount__sum']
+    initial_balance = models.DecimalField(max_digits=14, decimal_places=2, default=0)
+
+    @property
+    def balance(self):
+        transaction_total = Transaction.objects.filter(source=self).aggregate(models.Sum('amount'))['amount__sum']
+        if transaction_total is None:
+            transaction_total = 0
+        transaction_total = transaction_total + self.initial_balance
+        return round(transaction_total, 2)
 
     def __str__(self):
         return self.name
@@ -73,7 +81,7 @@ class Transaction(models.Model):
     title = models.CharField(max_length=64)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     source = models.ForeignKey(to=Account, on_delete=models.CASCADE, related_name='source')
-    destination = models.ForeignKey(to=Account, on_delete=models.CASCADE, related_name='destination')
+    destination = models.ForeignKey(to=Account, on_delete=models.CASCADE, null=True, blank=True, related_name='destination')
     notes = models.TextField(blank=True, null=True)
     last_modified = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(to=Category, on_delete=models.SET_NULL, blank=True, null=True)

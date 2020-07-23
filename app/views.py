@@ -9,23 +9,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.shortcuts import render
 from django.template import loader
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django import template
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from app.forms import AccountCreateForm, AccountUpdateForm, UserSettingsUpdateForm
+from app.csv_importer.monzo_importer import MonzoImporter
+from app.forms import AccountCreateForm, AccountUpdateForm, UserSettingsUpdateForm, UploadFileForm
 from app.models import Account, Settings
 from app.templatetags.currency_formatting import as_currency_with_user
 
 
 @login_required
 def index(request):
-    net_worth = Account.objects.filter(user=request.user, is_internal=True).aggregate(Sum('balance')).get('balance__sum')
+    queryset = Account.objects.filter(user=request.user, is_internal=True)
 
-    if net_worth is None:
-        net_worth = 0
+    net_worth = 0
+    for account in queryset:
+        net_worth = net_worth + account.balance
 
     context = {"net_worth": net_worth}
 
@@ -101,7 +103,7 @@ def account_values_chart(request):
     data = []
     total = 0
 
-    queryset = Account.objects.filter(user=request.user, is_internal=True).order_by('balance')
+    queryset = Account.objects.filter(user=request.user, is_internal=True)
 
     for account in queryset:
         labels.append(account.name)
@@ -131,3 +133,28 @@ class UserSettingsUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(UserSettingsUpdateView, self).get_context_data(**kwargs)
         return context
+
+
+@login_required
+def import_transactions(request):
+    success_url = reverse_lazy('accounts')
+    accounts = Account.objects.filter(user=request.user, is_internal=True)
+
+    if request.method == 'POST':
+        form = UploadFileForm(accounts, request.POST, request.FILES)
+        if form.is_valid():
+            importer = MonzoImporter(request.FILES['file'])
+            transactions, invalid_rows = importer.read()
+
+            if len(transactions) > 0 and len(invalid_rows) == 0:
+                for transaction in transactions:
+                    transaction.source = form.cleaned_data['account']
+                    transaction.save()
+
+                return HttpResponseRedirect(success_url)
+            else:
+                form.add_error('file', 'File is not a supported CSV type')
+    else:
+        form = UploadFileForm(accounts)
+
+    return render(request=request, template_name='import_transactions.html', context={'form': form})

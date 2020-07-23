@@ -1,0 +1,56 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Accounts {% endblock %}
+
+<!-- Specific Plugin CSS goes HERE -->
+{% block plugin_stylesheets %}{% endblock plugin_stylesheets %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% load currency_formatting %}
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Import Transactions</h4>
+                    <p class="card-description"></p>
+                    {{ form.non_field_errors }}
+                    {% for hidden_field in form.hidden_fields %}
+                        {{ hidden_field }}
+                    {% endfor %}
+                    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="form-group">
+                            <label>Account</label>
+                            {{ form.account.errors }}
+                            {{ form.account }}
+                        </div>
+                        <div class="form-group">
+                            <label>CSV File</label>
+                            {{ form.file.errors }}
+                            <input type="file" name="file" class="file-upload-default">
+                            <div class="input-group col-xs-12">
+                                <input type="text" class="form-control file-upload-info" disabled placeholder="CSV File">
+                                <span class="input-group-append">
+                                    <button class="file-upload-browse btn btn-primary" type="button">Choose</button>
+                                </span>
+                            </div>
+                        </div>
+                        <input class="btn btn-success mr-2" type="submit" value="Upload">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Plugin JS goes HERE  -->
+{% block plugin_javascripts %}{% endblock plugin_javascripts %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+    <script src="/static/assets/js/file-upload.js"></script>
+{% endblock javascripts %}
