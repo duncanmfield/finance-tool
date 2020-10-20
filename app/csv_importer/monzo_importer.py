@@ -11,9 +11,6 @@ class MonzoImporter(AbstractImporter):
     def get_title(self, row):
         return row['Name']
 
-    def get_currency(self, row):
-        return row['Currency']
-
     def get_amount(self, row):
         return row['Amount']
 

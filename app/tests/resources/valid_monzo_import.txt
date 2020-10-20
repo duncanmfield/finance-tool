@@ -1,0 +1,3 @@
+Transaction ID,Date,Time,Type,Name,Emoji,Category,Amount,Currency,Local amount,Local currency,Notes and #tags,Address,Receipt,Description,Category split
+tx_01,13/08/2019,11:46:05,Faster payment,JOHN SMITH,,,100.00,GBP,100.00,GBP,MONZO TOPUP,,,MONZO TOPUP,
+tx_02,15/08/2019,14:48:53,Card payment,Sports Centre,🎮,Entertainment,-7.50,GBP,-7.50,GBP,,London Road,,SPORTS CENTRE LONDON        GBR,

@@ -143,7 +143,7 @@ def import_transactions(request):
     if request.method == 'POST':
         form = UploadFileForm(accounts, request.POST, request.FILES)
         if form.is_valid():
-            importer = MonzoImporter(request.FILES['file'])
+            importer = MonzoImporter(request.FILES['file'].read().decode('utf-8'))
             transactions, invalid_rows = importer.read()
 
             if len(transactions) > 0 and len(invalid_rows) == 0:

@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from app.templatetags.currency_formatting import CURRENCY_SYMBOLS, NUMBER_FORMATTING_OPTIONS
-from datetime import date
+from datetime import date, datetime
 
 
 class Settings(models.Model):
@@ -78,6 +78,7 @@ class Transaction(models.Model):
         ordering = ['-date', 'title']
 
     date = models.DateField(default=date.today)
+    time = models.TimeField(default=datetime.strptime("00:00:00", "%H:%M:%S").time())
     title = models.CharField(max_length=64)
     amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     source = models.ForeignKey(to=Account, on_delete=models.CASCADE, related_name='source')

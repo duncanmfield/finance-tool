@@ -7,7 +7,7 @@ from app.models import Transaction
 
 class AbstractImporter(ABC):
     def __init__(self, file):
-        self.file = file.read().decode('utf-8')
+        self.file_contents = file
         self.valid_transactions = []
         self.invalid_rows = []
         pass
@@ -38,7 +38,7 @@ class AbstractImporter(ABC):
 
     def read(self):
         # TODO : Have the user pick an account to import the CSV in to
-        csv_data = reader(StringIO(self.file), delimiter=',')
+        csv_data = reader(StringIO(self.file_contents), delimiter=',')
         headers = next(csv_data)
 
         # Process each row of the CSV
@@ -61,10 +61,6 @@ class AbstractImporter(ABC):
 
     @abstractmethod
     def get_title(self, row):
-        pass
-
-    @abstractmethod
-    def get_currency(self, row):
         pass
 
     @abstractmethod

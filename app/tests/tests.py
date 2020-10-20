@@ -3,13 +3,17 @@
 MIT License
 Copyright (c) 2019 - present AppSeed.us
 """
+import os
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.template import Context
 from django.test import TestCase
 from django.urls import reverse
 
+from app.csv_importer.monzo_importer import MonzoImporter
 from app.forms import AccountCreateForm, AccountUpdateForm, UserSettingsUpdateForm
-from app.models import Account
+from app.models import Account, Transaction
 from app.templatetags import currency_formatting
 
 
@@ -51,7 +55,7 @@ class AccountCreateFormTests(TestCase):
 
     def test_create_form_is_valid(self):
         # Arrange
-        data = {'name': 'Foo', 'type': Account.TYPE_CHOICES[0][0], 'balance': 0}
+        data = {'name': 'Foo', 'type': Account.TYPE_CHOICES[0][0], 'initial_balance': 0}
         form = AccountCreateForm(data=data)
 
         # Act
@@ -76,13 +80,14 @@ class AccountUpdateFormTests(TestCase):
 
     def test_update_form_is_valid(self):
         # Arrange
-        data = {'name': 'Foo', 'type': Account.TYPE_CHOICES[0][0], 'balance': 0}
+        data = {'name': 'Foo', 'type': Account.TYPE_CHOICES[0][0], 'initial_balance': 0}
         form = AccountUpdateForm(data=data)
 
         # Act
 
         # Assert
         self.assertTrue(form.is_valid())
+
 
 class UserSettingsUpdateFormTests(TestCase):
     def setUp(self):
@@ -108,6 +113,7 @@ class UserSettingsUpdateFormTests(TestCase):
 
         # Assert
         self.assertTrue(form.is_valid())
+
 
 class CurrencyFormattingTests(TestCase):
     def setUp(self):
@@ -196,3 +202,32 @@ class ViewTests(TestCase):
 
         redirect_page_response = self.client.get(response.url)
         self.assertEqual(redirect_page_response.status_code, 200)
+
+
+class ImporterTests(TestCase):
+    def test_monzo_importer(self):
+        test_file_path = os.path.join(os.path.dirname(__file__), 'resources', 'valid_monzo_import.txt')
+        importer = MonzoImporter(open(test_file_path).read())
+        transactions, invalid_rows = importer.read()
+
+        expected_1 = Transaction(title="JOHN SMITH",
+                                 notes="MONZO TOPUP",
+                                 date=datetime.strptime("13/08/2019", "%d/%m/%Y").date(),
+                                 time=datetime.strptime("11:46:05", "%H:%M:%S").time(),
+                                 amount=100.00)
+
+        expected_2 = Transaction(title="Sports Centre",
+                                 notes="",
+                                 date=datetime.strptime("15/08/2019", "%d/%m/%Y").date(),
+                                 time=datetime.strptime("14:48:53", "%H:%M:%S").time(),
+                                 amount=-7.50)
+
+        self.assertTransactionEqual(expected_1, transactions[0])
+        self.assertTransactionEqual(expected_2, transactions[1])
+
+    def assertTransactionEqual(self, expected, actual):
+        self.assertEqual(expected.title, actual.title)
+        self.assertEqual(expected.notes, actual.notes)
+        self.assertEqual(expected.date, actual.date)
+        self.assertEqual(expected.time, actual.time)
+        self.assertEqual(expected.amount, actual.amount)

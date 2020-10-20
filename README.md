@@ -31,6 +31,10 @@ $ # Start the app - custom port
 $ # python manage.py runserver 0.0.0.0:<your_port>
 $
 $ # Access the web app in browser: http://127.0.0.1:8000/
+$
+$ # Execute tests with coverage tracking, then report coverage
+$ # coverage run --source='.' manage.py test
+$ # coverage report -m
 ```
 
 > Note: To use the app, please access the registration page and create a new user. After authentication, the app will unlock the private pages.
