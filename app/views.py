@@ -99,11 +99,11 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
 
 
 def account_values_chart(request):
+    queryset = Account.objects.filter(user=request.user, is_internal=True)
+
     labels = []
     data = []
     total = 0
-
-    queryset = Account.objects.filter(user=request.user, is_internal=True)
 
     for account in queryset:
         labels.append(account.name)
