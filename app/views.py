@@ -182,7 +182,7 @@ def import_transactions(request):
             importer = MonzoImporter(request.FILES['file'].read().decode('utf-8'))
             transactions, invalid_rows = importer.read()
 
-            if len(transactions) > 0 and len(invalid_rows) == 0:
+            if len(transactions) > 0:
                 for transaction in transactions:
                     transaction.source = form.cleaned_data['account']
                     transaction.user = request.user

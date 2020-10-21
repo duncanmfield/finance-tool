@@ -16,7 +16,7 @@ class AbstractImporter(ABC):
         transaction = Transaction()
 
         try:
-            transaction.id = self.get_transaction_id(row)
+            transaction.id = self.get_id(row)
             transaction.date = self.get_date(row).strftime('%Y-%m-%d')
             transaction.time = self.get_time(row)
             transaction.title = self.get_title(row)
@@ -48,7 +48,7 @@ class AbstractImporter(ABC):
         return self.valid_transactions, self.invalid_rows
 
     @abstractmethod
-    def get_transaction_id(self, row):
+    def get_id(self, row):
         pass
 
     @abstractmethod

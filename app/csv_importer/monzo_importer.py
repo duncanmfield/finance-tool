@@ -2,7 +2,7 @@ from app.csv_importer.importer import AbstractImporter
 from datetime import datetime
 
 class MonzoImporter(AbstractImporter):
-    def get_transaction_id(self, row):
+    def get_id(self, row):
         return row['Transaction ID']
 
     def get_date(self, row):
