@@ -44,7 +44,7 @@
                         {% for transaction in object_list %}
                         <tr>
                             <td>{{ transaction.date }}, {{ transaction.time }}</td>
-                            <td class="text-{% if transaction.amount < 0 %}danger{% else %}success{% endif %}">
+                            <td class="text-{% if transaction.amount <= 0 %}danger{% else %}success{% endif %}">
                                 {% as_currency transaction.amount %}
                             </td>
                             <td>{{ transaction.title }}</td>
