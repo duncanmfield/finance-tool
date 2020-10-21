@@ -77,6 +77,8 @@ class Transaction(models.Model):
     class Meta:
         ordering = ['-date', 'title']
 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    id = models.CharField(primary_key=True, max_length=32)
     date = models.DateField(default=date.today)
     time = models.TimeField(default=datetime.strptime("00:00:00", "%H:%M:%S").time())
     title = models.CharField(max_length=64)

@@ -17,7 +17,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from app.csv_importer.monzo_importer import MonzoImporter
 from app.forms import AccountCreateForm, AccountUpdateForm, UserSettingsUpdateForm, UploadFileForm
-from app.models import Account, Settings
+from app.models import Account, Settings, Transaction
 from app.templatetags.currency_formatting import as_currency_with_user
 
 
@@ -135,6 +135,42 @@ class UserSettingsUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
 
+def get_paginate_range(current_page, total_pages):
+    paginate_either_side = 5
+    max_paginate_size = paginate_either_side * 2 + 1
+
+    start_page = max(1, current_page - paginate_either_side)
+    end_page = min(total_pages + 1, start_page + max_paginate_size)
+
+    if end_page - start_page < max_paginate_size:
+        start_page = max(1, end_page - max_paginate_size)
+
+    return range(start_page, end_page)
+
+
+class TransactionListView(LoginRequiredMixin, ListView):
+    template_name = 'transactions.html'
+    paginate_by = 30
+    model = Transaction
+
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(TransactionListView, self).get_context_data(**kwargs)
+        context['paginate_range'] = get_paginate_range(context['page_obj'].number,
+                                                       context['page_obj'].paginator.num_pages)
+        return context
+
+class TransactionInListView(TransactionListView):
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user, amount__gt=0)
+
+class TransactionOutListView(TransactionListView):
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user, amount__lte=0)
+
+
 @login_required
 def import_transactions(request):
     success_url = reverse_lazy('accounts')
@@ -149,11 +185,12 @@ def import_transactions(request):
             if len(transactions) > 0 and len(invalid_rows) == 0:
                 for transaction in transactions:
                     transaction.source = form.cleaned_data['account']
+                    transaction.user = request.user
                     transaction.save()
 
                 return HttpResponseRedirect(success_url)
             else:
-                form.add_error('file', 'File is not a supported CSV type')
+                form.add_error('file', 'File has no new transactions or is not a supported CSV type')
     else:
         form = UploadFileForm(accounts)
 

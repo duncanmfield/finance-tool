@@ -16,6 +16,7 @@ class AbstractImporter(ABC):
         transaction = Transaction()
 
         try:
+            transaction.id = self.get_transaction_id(row)
             transaction.date = self.get_date(row).strftime('%Y-%m-%d')
             transaction.time = self.get_time(row)
             transaction.title = self.get_title(row)
@@ -28,13 +29,11 @@ class AbstractImporter(ABC):
 
     def validate_transaction(self, transaction, row):
         try:
-            transaction.full_clean()
-        except ValidationError as err:
-            # Expect src and dest to error
-            if len(err.error_dict) > 2:
-                self.invalid_rows.append(row)
-            else:
-                self.valid_transactions.append(transaction)
+            transaction.full_clean(exclude=['user', 'source'])
+        except ValidationError:
+            self.invalid_rows.append(row)
+        else:
+            self.valid_transactions.append(transaction)
 
     def read(self):
         # TODO : Have the user pick an account to import the CSV in to
@@ -48,11 +47,13 @@ class AbstractImporter(ABC):
 
         return self.valid_transactions, self.invalid_rows
 
-    """
-    Should return instance of datetime.datetime
-    """
+    @abstractmethod
+    def get_transaction_id(self, row):
+        pass
+
     @abstractmethod
     def get_date(self, row):
+        """Should return instance of datetime.datetime"""
         pass
 
     @abstractmethod

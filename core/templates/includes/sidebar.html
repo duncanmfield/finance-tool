@@ -79,12 +79,17 @@
             <div class="collapse" id="transactions">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'home' %}">
+                  <a class="nav-link" href="{% url 'transactions' %}">
+                    <span class="menu-icon"><i class="mdi mdi-arrow-all text-success"></i></span>All
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'transactions_in' %}">
                     <span class="menu-icon"><i class="mdi mdi-call-received text-success"></i></span>Incomes
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'home' %}">
+                  <a class="nav-link" href="{% url 'transactions_out' %}">
                     <span class="menu-icon"><i class="mdi mdi-call-made text-danger"></i></span>Expenses
                   </a>
                 </li>

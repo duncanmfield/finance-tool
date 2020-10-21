@@ -205,7 +205,7 @@ class ViewTests(TestCase):
 
 
 class ImporterTests(TestCase):
-    def test_monzo_importer(self):
+    def test_monzo_importer_valid_transactions(self):
         test_file_path = os.path.join(os.path.dirname(__file__), 'resources', 'valid_monzo_import.txt')
         importer = MonzoImporter(open(test_file_path).read())
         transactions, invalid_rows = importer.read()
@@ -224,6 +224,10 @@ class ImporterTests(TestCase):
 
         self.assertTransactionEqual(expected_1, transactions[0])
         self.assertTransactionEqual(expected_2, transactions[1])
+
+    def test_monzo_importer_invalid_transactions(self):
+        # TODO : Test that an amount with a letter in is tracked as an invalid row
+        pass
 
     def assertTransactionEqual(self, expected, actual):
         self.assertEqual(expected.title, actual.title)

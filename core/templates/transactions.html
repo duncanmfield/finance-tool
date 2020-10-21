@@ -1,0 +1,67 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Accounts {% endblock %}
+
+<!-- Specific Plugin CSS goes HERE -->
+{% block plugin_stylesheets %}{% endblock plugin_stylesheets %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+{% load currency_formatting %}
+<div class="content-wrapper">
+    <div class="col-lg-13 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Transactions</h4>
+                <div class="pagination">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <a class="btn btn-outline-secondary" href="?page=1">&laquo;</a>
+                        <a class="btn btn-outline-secondary" href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}1{% endif %}">&lsaquo;</a>
+                        {% for page in paginate_range %}
+                            {% if page_obj.number == page %}
+                                <a class="btn btn-secondary" href="?page={{ page }}">{{ page }}</a>
+                            {% else %}
+                                <a class="btn btn-outline-secondary" href="?page={{ page }}">{{ page }}</a>
+                            {% endif %}
+                        {% endfor %}
+                        <a class="btn btn-outline-secondary" href="?page={% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}{{ page_obj.paginator.num_pages }}{% endif %}">&rsaquo;</a>
+                        <a class="btn btn-outline-secondary" href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+                    </div>
+                </div>
+                <br/>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Title</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for transaction in object_list %}
+                        <tr>
+                            <td>{{ transaction.date }}, {{ transaction.time }}</td>
+                            <td class="text-{% if transaction.amount < 0 %}danger{% else %}success{% endif %}">
+                                {% as_currency transaction.amount %}
+                            </td>
+                            <td>{{ transaction.title }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Plugin JS goes HERE  -->
+{% block plugin_javascripts %}{% endblock plugin_javascripts %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}
