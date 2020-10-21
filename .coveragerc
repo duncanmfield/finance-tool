@@ -3,5 +3,10 @@
 [run]
 source = .
 omit =
-  app/migrations/*.py
-  app/tests.py
+  */migrations/*.py
+  */tests.py
+
+[report]
+exclude_lines =
+    ^"""
+    @abstract

@@ -36,13 +36,13 @@
                                 {{ form.type }}
                             </div>
                         </div>
-                        {{ form.balance.errors }}
+                        {{ form.initial_balance.errors }}
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label">{{ form.balance.label_tag }}</label>
+                            <label class="col-sm-2 col-form-label">{{ form.initial_balance.label_tag }}</label>
                             <div class="col-sm-10">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">{% currency_symbol %}</span>
-                                    {{ form.balance }}
+                                    {{ form.initial_balance }}
                                 </div>
                             </div>
                         </div>

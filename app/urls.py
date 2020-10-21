@@ -13,6 +13,10 @@ urlpatterns = [
     url(r'^account_update/(?P<pk>\d+)/$', views.AccountUpdateView.as_view(), name='account_update'),
     url(r'^account_delete/(?P<pk>\d+)/$', views.AccountDeleteView.as_view(), name='account_delete'),
     path('account_values_chart/', views.account_values_chart, name='account_values_chart'),
+    path('import/', views.import_transactions, name='import_transactions'),
+    path('transactions/', views.TransactionListView.as_view(), name='transactions'),
+    path('transactions_in/', views.TransactionInListView.as_view(), name='transactions_in'),
+    path('transactions_out/', views.TransactionOutListView.as_view(), name='transactions_out'),
 
     path('user_settings/', views.UserSettingsUpdateView.as_view(), name='user_settings'),
 

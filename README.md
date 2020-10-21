@@ -6,7 +6,6 @@
 
 A tool built in Python using Django/Bootstrap, aiming to provide budget management as well as account and net worth tracking.
 
-
 ## How to use it
 
 ```bash
@@ -36,6 +35,10 @@ $ # Start the app - custom port
 $ # python manage.py runserver 0.0.0.0:<your_port>
 $
 $ # Access the web app in browser: http://127.0.0.1:8000/
+$
+$ # Execute tests with coverage tracking, then report coverage
+$ # coverage run --source='.' manage.py test
+$ # coverage report -m
 ```
 
 > Note: To use the app, please access the registration page and create a new user. After authentication, the app will unlock the private pages.
@@ -170,7 +173,7 @@ $ waitress-serve --port=8001 core.wsgi:application
 Serving on http://localhost:8001
 ```
 
-Visit `http://localhost:8001` in your browser. The app should be up & running.
+Visit `http://localhost:8001` in your browser. The app should be up and running.
 
 <br />
 

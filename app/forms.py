@@ -5,6 +5,8 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from django import forms
+from django.core.exceptions import ValidationError
+
 from app.models import Account, Settings
 
 
@@ -19,7 +21,7 @@ class AccountCreateForm(forms.ModelForm):
             'placeholder': 'Account Type',
             'class': 'form-control'
         }
-        self.fields['balance'].widget.attrs = {
+        self.fields['initial_balance'].widget.attrs = {
             'placeholder': 'Initial Balance',
             'class': 'form-control'
         }
@@ -31,7 +33,8 @@ class AccountCreateForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ('name', 'type', 'balance', 'is_internal')
+        fields = ('name', 'type', 'initial_balance', 'is_internal')
+
 
 class AccountUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -44,7 +47,7 @@ class AccountUpdateForm(forms.ModelForm):
             'placeholder': 'Account Type',
             'class': 'form-control'
         }
-        self.fields['balance'].widget.attrs = {
+        self.fields['initial_balance'].widget.attrs = {
             'placeholder': 'Initial Balance',
             'class': 'form-control'
         }
@@ -56,7 +59,8 @@ class AccountUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ('name', 'type', 'balance', 'is_internal')
+        fields = ('name', 'type', 'initial_balance', 'is_internal')
+
 
 class UserSettingsUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -73,3 +77,27 @@ class UserSettingsUpdateForm(forms.ModelForm):
     class Meta:
         model = Settings
         fields = ('currency', 'number_format')
+
+
+def file_size(value):  # add this to some file where you can import it from
+    limit_mib = 5
+    limit = limit_mib * 1024 * 1024
+    if value.size > limit:
+        raise ValidationError('File too large. Size should not exceed ' + str(limit_mib) + ' MiB.')
+
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField(label='Select a CSV file', validators=[file_size])
+    account = forms.ModelChoiceField(queryset=None)
+
+    def __init__(self, accounts=None, *args, **kwargs):
+        super(UploadFileForm, self).__init__(*args, **kwargs)
+        self.fields['file'].widget.attrs = {
+            'placeholder': 'CSV File',
+            'class': 'file-upload-default'
+        }
+        self.fields['account'].widget.attrs = {
+            'class': 'form-control'
+        }
+
+        self.fields['account'].queryset = accounts
