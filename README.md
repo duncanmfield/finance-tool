@@ -1,5 +1,9 @@
 # Finance Tool
 
+> :information_source: **Repository is in early development.**
+
+![Python Tests](https://github.com/duncanmfield/finance-tool/workflows/Python%20Tests/badge.svg) [![codecov](https://codecov.io/gh/duncanmfield/finance-tool/branch/master/graph/badge.svg)](https://codecov.io/gh/duncanmfield/finance-tool)
+
 A tool built in Python using Django/Bootstrap, aiming to provide budget management as well as account and net worth tracking.
 
 ## How to use it
@@ -104,9 +108,9 @@ The project is coded using a simple and intuitive structure presented below:
 > The bootstrap flow
 
 - Django bootstrapper `manage.py` uses `core/settings.py` as the main configuration file
-- `core/settings.py` loads the app magic from `.env` file
-- Redirect the guest users to Login page
-- Unlock the pages served by *app* node for authenticated users
+- `core/settings.py` loads the app environment variables from the `.env` file
+- Guest users are redirected to the login page
+- Authenticated users are served pages from the *app* node
 
 <br />
 
